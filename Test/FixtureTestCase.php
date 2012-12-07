@@ -46,7 +46,8 @@ abstract class FixtureTestCase extends WebTestCase
      */
     public $options = array(
         'document_manager'  => 'doctrine.odm.mongodb.document_manager',
-        'default_directory' => '/DataFixtures/MongoDB'
+        'default_directory' => '/DataFixtures/MongoDB',
+        'load_first'        => false
     );
 
     /**
@@ -141,7 +142,13 @@ abstract class FixtureTestCase extends WebTestCase
         $paths = array();
 
         foreach ($this->fixtures as $bundle) {
-            $bundle = static::$kernel->getBundle($bundle, true);
+            if (true === $this->options['load_first']) {
+                $bundle = static::$kernel->getBundle($bundle, true);
+            } else {
+                $bundle = static::$kernel->getBundle($bundle, false);
+                $bundle = end($bundle);
+            }
+
             if (!$bundle) {
                 continue;
             }
