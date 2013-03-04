@@ -172,15 +172,16 @@ abstract class FixtureTestCase extends WebTestCase
     }
 
     /**
-     * Purges the db and shuts down the kernel
+     * shuts down the kernel
      *
      * @return void
      */
     protected function tearDown()
     {
+        /* @TODO allow to configure purging during tearDown execution
         $purger = new MongoDBPurger(static::$dm);
         $purger->purge();
-
+        */
         if (null !== static::$kernel) {
             static::$kernel->shutdown();
         }
